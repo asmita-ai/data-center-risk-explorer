@@ -1,7 +1,0 @@
-split,model,MAE,R2
-Random 5-fold,Baseline (mean),21.552,-0.005
-Random 5-fold,Ridge,5.336,0.918
-Random 5-fold,Random forest,4.619,0.939
-Unseen cell design (group CV),Baseline (mean),21.855,-0.143
-Unseen cell design (group CV),Ridge,9.993,0.436
-Unseen cell design (group CV),Random forest,8.433,0.761

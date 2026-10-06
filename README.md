@@ -1,27 +1,44 @@
 # Battery Thermal Runaway Benchmark
 
-**Question:** From cell metadata and ejected mass alone, how well can we predict the total heat released in a Li-ion thermal runaway, and does the model hold up on cell designs it has never seen?
+**Question:** From cell metadata and ejected mass alone, how well can we estimate the total heat released in a Li-ion thermal runaway, and does the model hold up on unseen cell designs?
 
-**Data:** NREL/NASA Battery Failure Databank (Finegan et al., *J. Power Sources* 597, 2024, doi:10.1016/j.jpowsour.2024.234106). Download the spreadsheet from NREL/NASA yourself and respect its licence (CC BY-NC-ND for the paper).
+**Data Citation:** Finegan et al., *J. Power Sources* 597 (2024) 234106, doi:10.1016/j.jpowsour.2024.234106. Note that the data licence is CC BY-NC-ND, so the raw dataset is NOT redistributed in this repository. Download the spreadsheet from NREL/NASA yourself to reproduce these results.
 
 **Run:** `python bfd_benchmark.py battery-failure-databank-revision2-feb24.xlsx "Battery Failure Databank"`
+(Dependencies are pinned in `requirements.txt`. Tested with Python 3.12).
 
-**Method:** mean baseline vs ridge vs random forest; random 5-fold vs group CV by cell design; heat-like columns excluded to prevent leakage. We use target variable `Corrected-Total-Energy-Yield-kJ` grouped by `Cell-Description`. Categorical variables were converted to strings and imputed, while numerical variables were scaled and median-imputed.
+**Method:** Mean baseline vs ridge vs random forest; evaluated using 10 repeats of 5-fold group CV by cell design (each test fold contains completely unseen cell designs). 
 
-## Status
-- Benchmark successfully executed on the real databank. 
+**Tiers of features evaluated:**
+*   **Tier A (Pre-test only):** Only specifications known before the test (e.g. `Cell-Capacity-Ah`, `Cell-Nominal-Voltage-V`, `Cell-Energy-Wh`, pre-test mass, casing thickness, trigger mechanism). We tested this with and without the identifiers `Test-Series` / `S-FTRC-Generation`.
+*   **Tier B (Pre-test + Trigger setup):** Tier A plus `Heater-Power-W`, `Heater-Time-On-s`, `Avg-Cell-Temp-At-Trigger-degC`, `Energy-Applied-to-Trigger-kJ`.
+*   **Tier C (Full available features):** Tier B plus post-test measurements (`Post-Test-Mass-...` and `Cell-Failure-Mechanism`).
 
-## Results
+## Results (10 repeats of 5-fold group CV by cell design)
+
+*Note: ± values represent standard deviation across splits, not a confidence interval.*
+
 ```
-                        split           model    MAE     R2
-                Random 5-fold Baseline (mean) 21.552 -0.005
-                Random 5-fold           Ridge  5.336  0.918
-                Random 5-fold   Random forest  4.619  0.939
-Unseen cell design (group CV) Baseline (mean) 21.855 -0.143
-Unseen cell design (group CV)           Ridge  9.993  0.436
-Unseen cell design (group CV)   Random forest  8.433  0.761
+             Tier           Model              MAE               R2
+  Tier A (No IDs) Baseline (mean) 21.787 +/- 4.820 -0.401 +/- 1.080
+  Tier A (No IDs)           Ridge  9.465 +/- 2.213  0.594 +/- 0.297
+  Tier A (No IDs)   Random forest  8.798 +/- 1.959  0.671 +/- 0.254
+Tier A (With IDs) Baseline (mean) 21.787 +/- 4.820 -0.401 +/- 1.080
+Tier A (With IDs)           Ridge  9.813 +/- 2.587  0.562 +/- 0.344
+Tier A (With IDs)   Random forest  8.801 +/- 2.147  0.673 +/- 0.234
+           Tier B Baseline (mean) 21.787 +/- 4.820 -0.401 +/- 1.080
+           Tier B           Ridge  9.883 +/- 2.603  0.563 +/- 0.314
+           Tier B   Random forest  9.142 +/- 2.066  0.652 +/- 0.256
+           Tier C Baseline (mean) 21.787 +/- 4.820 -0.401 +/- 1.080
+           Tier C           Ridge  7.033 +/- 1.608  0.806 +/- 0.221
+           Tier C   Random forest  7.211 +/- 1.573  0.801 +/- 0.133
 ```
-As shown, the models perform very well on random splits. However, their predictive power drops when predicting total heat yield for unseen cell designs (group CV), highlighting the difficulty of generalizing to entirely new battery formats and chemistries.
+
+As shown, the models can estimate total heat yield for unseen cell designs using only metadata (Tier A) with an R² of ~0.67. Tier B showed no improvement over Tier A. However, including post-test measurements (Tier C) adds a lot of explanatory power, raising R² to ~0.80, with Ridge and Random Forest performing about equally well.
+
+### Visualizations
+![Actual vs Estimated total heat output for the Random Forest model](pred_vs_actual.png)
+![Estimation Error by Cell Design](error_by_design.png)
 
 ## Limitations
-Small dataset (~365 samples), limited number of distinct cell designs (~31 designs), lab calorimeter conditions (not data-center racks), no claim of novelty: this is a benchmark and replication exercise. Predictions for cell designs that the model has never encountered before are significantly less accurate.
+Small dataset (~365 samples), limited number of distinct cell designs (~31 designs), lab calorimeter conditions (not data-center racks), no claim of novelty: this is a benchmark and replication exercise. Estimations apply exclusively to unseen cell designs *within the distribution of this dataset*, and we do not make claims beyond it.

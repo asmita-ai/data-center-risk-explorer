@@ -1,0 +1,13 @@
+Tier,Model,MAE,R2
+Tier A (No IDs),Baseline (mean),21.787 +/- 4.820,-0.401 +/- 1.080
+Tier A (No IDs),Ridge,9.465 +/- 2.213,0.594 +/- 0.297
+Tier A (No IDs),Random forest,8.798 +/- 1.959,0.671 +/- 0.254
+Tier A (With IDs),Baseline (mean),21.787 +/- 4.820,-0.401 +/- 1.080
+Tier A (With IDs),Ridge,9.813 +/- 2.587,0.562 +/- 0.344
+Tier A (With IDs),Random forest,8.801 +/- 2.147,0.673 +/- 0.234
+Tier B,Baseline (mean),21.787 +/- 4.820,-0.401 +/- 1.080
+Tier B,Ridge,9.883 +/- 2.603,0.563 +/- 0.314
+Tier B,Random forest,9.142 +/- 2.066,0.652 +/- 0.256
+Tier C,Baseline (mean),21.787 +/- 4.820,-0.401 +/- 1.080
+Tier C,Ridge,7.033 +/- 1.608,0.806 +/- 0.221
+Tier C,Random forest,7.211 +/- 1.573,0.801 +/- 0.133
