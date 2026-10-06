@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Data Center Risk & Footprint Explorer</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f8f7;--card:#fff;--tx:#14201b;--mu:#5b6b64;--ac:#0e8a6a;--w:#2a7fd4;--i:#e0902b;--bd:#dbe3df}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1512;--card:#17211d;--tx:#e6efe9;--mu:#92a39b;--ac:#3fd1a5;--w:#5aa6ee;--i:#f0a94a;--bd:#2a3a33}}
+:root[data-theme="dark"]{--bg:#0e1512;--card:#17211d;--tx:#e6efe9;--mu:#92a39b;--ac:#3fd1a5;--w:#5aa6ee;--i:#f0a94a;--bd:#2a3a33}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.6rem;margin:0 0 4px}h2{font-size:1.15rem;margin:0 0 10px}
+.sub{color:var(--mu);margin:0 0 16px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tabs button{flex:1;min-width:0;padding:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
+label{display:block;font-weight:600;margin:12px 0 4px;font-size:.92rem}
+select,input[type=range]{width:100%}
+select{padding:9px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
+.val{color:var(--ac);font-weight:700}
+.big{font-size:2rem;font-weight:800;line-height:1.1}
+.bar{display:flex;height:26px;border-radius:7px;overflow:hidden;margin:10px 0 6px;background:var(--bd)}
+.bar div{transition:width .3s}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem;color:var(--mu)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.note{font-size:.85rem;color:var(--mu);border-left:3px solid var(--i);padding-left:10px;margin-top:10px}
+.row{display:flex;align-items:center;gap:10px;margin:8px 0;cursor:pointer;padding:6px;border-radius:8px;border:1px solid transparent}
+.row.sel{border-color:var(--ac)}
+.row .nm{width:112px;font-weight:600;font-size:.9rem}
+.row .tr{flex:1;height:14px;background:var(--bd);border-radius:7px;overflow:hidden}
+.row .fl{height:100%;background:var(--ac);transition:width .3s}
+.row .sc{width:38px;text-align:right;font-weight:700}
+dl{margin:0}dt{font-weight:700;margin-top:8px;font-size:.9rem}dd{margin:2px 0 0;color:var(--mu);font-size:.92rem}
+footer{font-size:.8rem;color:var(--mu);margin-top:20px}
+.hide{display:none}
+</style></head><body><div class="wrap">
+<h1>Data Center Risk &amp; Footprint Explorer</h1>
+<p class="sub">An educational estimator for two problems in AI infrastructure: how much water a data center really uses, and which backup-battery chemistry carries which fire hazard.</p>
+<div class="tabs"><button id="t1" class="on">Water footprint</button><button id="t2">Battery chemistry</button><button id="t3">Evidence</button></div>
+
+<section id="p1">
+<div class="card"><h2>Configure a facility</h2>
+<label>IT load: <span class="val" id="mwv">50</span> MW</label><input type="range" id="mw" min="5" max="300" value="50">
+<label>Average utilisation: <span class="val" id="utv">70</span>%</label><input type="range" id="ut" min="20" max="100" value="70">
+<div class="grid"><div><label>Cooling design</label><select id="cool">
+<option value="evap">Evaporative cooling towers</option><option value="hyb">Hybrid (dry + evaporative peak)</option><option value="liq">Warm-water liquid, dry coolers</option></select></div>
+<div><label>Local electricity grid</label><select id="grid">
+<option value="coal">Coal-heavy</option><option value="gas">Gas-heavy</option><option value="mix" selected>Mixed</option><option value="hydro">Hydro-heavy</option><option value="clean">Wind/solar-heavy</option></select></div></div></div>
+<div class="card"><h2>Estimated annual water consumption</h2>
+<div class="big" id="tot">–</div><div class="sub" id="eq"></div>
+<div class="bar"><div id="bd" style="background:var(--w)"></div><div id="bi" style="background:var(--i)"></div></div>
+<div class="leg"><span><i class="dot" style="background:var(--w)"></i>On-site cooling: <b id="vd"></b></span><span><i class="dot" style="background:var(--i)"></i>Power generation (off-site): <b id="vi"></b></span></div>
+<p class="note" id="insight"></p></div>
+</section>
+
+<section id="p2" class="hide">
+<div class="card"><h2>What matters most to you?</h2>
+<p class="sub" style="margin-bottom:0">Set priorities for a UPS battery room. Chemistries are re-ranked live; click one for the chemistry behind it.</p>
+<div id="sl"></div></div>
+<div class="card"><h2>Ranking</h2><div id="rk"></div></div>
+<div class="card" id="dt"></div>
+</section>
+
+<section id="p3" class="hide">
+<div class="card"><h2>Layer 3: real-data benchmark</h2>
+<p>A Python benchmark on the open Battery Failure Databank (~365 calorimeter abuse tests on commercial Li-ion cells across ~31 cell designs). It evaluates how well total heat release can be predicted from cell metadata and ejected mass (excluding any leakage columns), compared with a naive baseline, and whether the model generalizes to unseen cell designs.</p>
+<p class="note"><b>Results:</b> A Random Forest model predicted total heat yield with high accuracy (R² = 0.939, MAE = 4.6 kJ) on random splits. However, when tested on unseen cell designs (group CV), performance dropped significantly (R² = 0.761, MAE = 8.4 kJ). This highlights the difficulty of extrapolating safety predictions to entirely new battery formats and chemistries. No novelty is claimed; this is a benchmark/replication exercise.</p></div>
+<div class="card"><h2>Sources behind this project</h2><dl>
+<dt>Battery Failure Databank</dt><dd>Finegan et al., Journal of Power Sources 597 (2024) 234106, doi:10.1016/j.jpowsour.2024.234106</dd>
+<dt>ML for thermal runaway warning (review)</dt><dd>Batteries 2026, 12(6), 204, doi:10.3390/batteries12060204</dd>
+<dt>Data center fire cases and Li-ion risk</dt><dd>Fire-risk review in ScienceDirect (S095042302500350X); DCD reports on the Kakao/SK and Digital Realty Singapore fires</dd>
+<dt>Water footprint and transparency</dt><dd>arXiv 2512.11863 (AI environmental risks); arXiv 2608.09882 (indirect use rarely disclosed)</dd>
+<dt>Warm-water liquid cooling claims</dt><dd>NVIDIA blog on 45 °C cooling, and TechCrunch (22 Jun 2026) on why on-site savings are not the whole footprint</dd></dl>
+<p class="note">Model factors on the Water tab are my rounded assumptions, not values taken from these sources. Replace them with cited values before relying on the output.</p></div>
+</section>
+<footer><b>Read this first.</b> Every number here comes from my own simplified model with rounded, typical engineering ranges, not from measurements of a specific facility. Real values vary widely by climate, season, design and grid. Treat results as order-of-magnitude, and check primary sources before relying on them. Battery scores are qualitative judgements, not test results. Original project; all code and wording written for this page.</footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const COOL={evap:{wue:1.8,pue:1.35},hyb:{wue:.6,pue:1.25},liq:{wue:.05,pue:1.18}};
+const GRID={coal:1.8,gas:.8,mix:1.3,hydro:5,clean:.1};
+const fmt=n=>n>=1e3?(n/1e3).toFixed(2)+' billion L':n.toFixed(1)+' million L';
+function water(){
+ const mw=+$('mw').value,ut=+$('ut').value,c=COOL[$('cool').value],g=GRID[$('grid').value];
+ $('mwv').textContent=mw;$('utv').textContent=ut;
+ const mwh=mw*8760*ut/100;
+ const d=mwh*1000*c.wue/1e6, i=mwh*c.pue*1000*g/1e6, t=d+i;
+ $('tot').textContent=fmt(t);
+ $('eq').textContent='Roughly the household use of '+Math.round(t*1e6/(150*365)).toLocaleString()+' people (at 150 L/person/day).';
+ $('bd').style.width=(d/t*100)+'%';$('bi').style.width=(i/t*100)+'%';
+ $('vd').textContent=fmt(d);$('vi').textContent=fmt(i);
+ const sh=Math.round(d/t*100);
+ let m='On-site cooling is only '+sh+'% of this total. ';
+ if(sh<30)m+='Even a near-zero-water cooling design leaves most of the footprint in power generation, so the grid choice now matters more than the cooling choice.';
+ else m+='Here cooling dominates. Switching to warm-water liquid cooling would cut on-site use sharply, though dry cooling can raise electricity demand.';
+ if($('grid').value==='hydro')m+=' Hydro figures depend heavily on how reservoir evaporation is allocated, so treat this one with extra caution.';
+ $('insight').textContent=m;
+}
+['mw','ut','cool','grid'].forEach(k=>$(k).addEventListener('input',water));
+
+// Battery data: scores 1-5 (5 = best for the user)
+const B=[
+{n:'Li-ion NMC',s:{Safety:2,'Space efficiency':5,Cost:3,Lifespan:3},
+ onset:'Cell runaway can begin roughly in the 150–210 °C region, and it self-heats once started.',
+ gas:'H2, CO, CO2, hydrocarbons, plus electrolyte vapour; LiPF6 salts can yield toxic HF.',
+ haz:'Oxygen-releasing layered oxide cathode feeds the fire from inside the cell, so cooling alone is slow to stop it.',
+ fix:'Early gas/heat detection, fire-rated separation from server halls, propagation barriers, enough cooling water for the long tail.'},
+{n:'Li-ion LFP',s:{Safety:4,'Space efficiency':3,Cost:4,Lifespan:4},
+ onset:'Runaway onset is typically higher than NMC (roughly 220 °C and above), and releases less heat.',
+ gas:'Mostly H2, CO and CO2 with flammable electrolyte vapour; HF is still possible from the electrolyte.',
+ haz:'Stable phosphate lattice holds oxygen strongly, but the organic electrolyte is still flammable, so it is safer, not safe.',
+ fix:'Same detection and ventilation discipline as NMC, with explosion-venting design because vented gas can ignite late.'},
+{n:'Sodium-ion',s:{Safety:4,'Space efficiency':2,Cost:4,Lifespan:3},
+ onset:'Reported as comparable to LFP-class cells, but data are younger and vary by cathode type.',
+ gas:'Similar organic-electrolyte decomposition gases; less long-term field evidence.',
+ haz:'No lithium, cheaper raw materials, but still a flammable electrolyte; behaviour differs between cathode families.',
+ fix:'Treat as lithium-class until field data mature; watch certification and standards as they develop.'},
+{n:'VRLA lead-acid',s:{Safety:4,'Space efficiency':1,Cost:5,Lifespan:2},
+ onset:'No lithium-style cascade, but overcharge or high temperature can cause thermal runaway of the float-charge kind.',
+ gas:'Hydrogen (and oxygen) from water electrolysis; sulfuric acid mist if vented.',
+ haz:'Non-flammable electrolyte, yet hydrogen accumulation and heavy lead content bring different risks.',
+ fix:'Ventilation, temperature-compensated charging, regular replacement; large footprint and weight are the real cost.'}
+];
+const W={Safety:5,'Space efficiency':2,Cost:2,Lifespan:3};let sel=0;
+function build(){const s=$('sl');s.innerHTML='';
+ for(const k in W){s.insertAdjacentHTML('beforeend',`<label>${k}: <span class="val" id="v_${k.replace(/\W/g,'')}">${W[k]}</span>/5</label><input type="range" min="0" max="5" value="${W[k]}" data-k="${k}">`)}
+ s.querySelectorAll('input').forEach(e=>e.addEventListener('input',()=>{W[e.dataset.k]=+e.value;$('v_'+e.dataset.k.replace(/\W/g,'')).textContent=e.value;rank()}));}
+function rank(){
+ const tw=Object.values(W).reduce((a,b)=>a+b,0)||1;
+ const r=B.map((b,i)=>({i,b,sc:Object.keys(W).reduce((a,k)=>a+W[k]*b.s[k],0)/tw})).sort((a,b)=>b.sc-a.sc);
+ $('rk').innerHTML=r.map(x=>`<div class="row ${x.i===sel?'sel':''}" data-i="${x.i}"><span class="nm">${x.b.n}</span><span class="tr"><div class="fl" style="width:${x.sc/5*100}%"></div></span><span class="sc">${x.sc.toFixed(1)}</span></div>`).join('');
+ $('rk').querySelectorAll('.row').forEach(e=>e.onclick=()=>{sel=+e.dataset.i;rank()});
+ const b=B[sel];
+ $('dt').innerHTML=`<h2>${b.n}: the chemistry</h2><dl><dt>Runaway behaviour</dt><dd>${b.onset}</dd><dt>Gases released</dt><dd>${b.gas}</dd><dt>Why it burns (or doesn't)</dt><dd>${b.haz}</dd><dt>Practical mitigation</dt><dd>${b.fix}</dd></dl>`;
+}
+function tab(n){[1,2,3].forEach(k=>{$('p'+k).classList.toggle('hide',n!==k);$('t'+k).classList.toggle('on',n===k)})}
+$('t1').onclick=()=>tab(1);$('t2').onclick=()=>tab(2);$('t3').onclick=()=>tab(3);
+water();build();rank();
+</script></body></html>
