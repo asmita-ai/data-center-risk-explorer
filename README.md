@@ -4,13 +4,13 @@
 
 **Data Citation:** Finegan et al., *J. Power Sources* 597 (2024) 234106, doi:10.1016/j.jpowsour.2024.234106. Note that the data licence is CC BY-NC-ND, so the raw dataset is NOT redistributed in this repository. Download the spreadsheet from NREL/NASA yourself to reproduce these results.
 
-**Run:** `python bfd_benchmark.py battery-failure-databank-revision2-feb24.xlsx "Battery Failure Databank"`
-(Dependencies are pinned in `requirements.txt`. Tested with Python 3.12).
+**Run:** `cd benchmark` then `python bfd_benchmark.py ../battery-failure-databank-revision2-feb24.xlsx "Battery Failure Databank"`
+(Dependencies are pinned in `benchmark/requirements.txt`. Tested with Python 3.12).
 
 **Method:** Mean baseline vs ridge vs random forest; evaluated using 10 repeats of 5-fold group CV by cell design (each test fold contains completely unseen cell designs). 
 
 **Tiers of features evaluated:**
-*   **Tier A (Pre-test only):** Only specifications known before the test (e.g. `Cell-Capacity-Ah`, `Cell-Nominal-Voltage-V`, `Cell-Energy-Wh`, pre-test mass, casing thickness, trigger mechanism). We tested this with and without the identifiers `Test-Series` / `S-FTRC-Generation`.
+*   **Tier A (Pre-test only):** Only specifications known before the test (e.g. `Cell-Capacity-Ah`, `Cell-Nominal-Voltage-V`, `Cell-Energy-Wh`, pre-test mass, casing thickness, trigger mechanism). Tier A strictly uses **no ejected mass**. We tested this with and without the identifiers `Test-Series` / `S-FTRC-Generation`.
 *   **Tier B (Pre-test + Trigger setup):** Tier A plus `Heater-Power-W`, `Heater-Time-On-s`, `Avg-Cell-Temp-At-Trigger-degC`, `Energy-Applied-to-Trigger-kJ`.
 *   **Tier C (Full available features):** Tier B plus post-test measurements (`Post-Test-Mass-...` and `Cell-Failure-Mechanism`).
 
@@ -37,8 +37,11 @@ Tier A (With IDs)   Random forest  8.801 +/- 2.147  0.673 +/- 0.234
 As shown, the models can estimate total heat yield for unseen cell designs using only metadata (Tier A) with an R² of ~0.67. Tier B showed no improvement over Tier A. However, including post-test measurements (Tier C) adds a lot of explanatory power, raising R² to ~0.80, with Ridge and Random Forest performing about equally well.
 
 ### Visualizations
-![Actual vs Estimated total heat output for the Random Forest model](pred_vs_actual.png)
-![Estimation Error by Cell Design](error_by_design.png)
+*Plot 1 shows Estimated vs Actual heat output for the Random Forest model using Tier C features.*
+![Actual vs Estimated total heat output for the Random Forest model (Tier C)](benchmark/estimated_vs_actual.png)
+
+*Plot 2 shows the Mean Absolute Error for the same model (Tier C Random Forest) broken down by cell design.*
+![Estimation Error by Cell Design (Tier C Random Forest)](benchmark/error_by_design.png)
 
 ## Limitations
 Small dataset (~365 samples), limited number of distinct cell designs (~31 designs), lab calorimeter conditions (not data-center racks), no claim of novelty: this is a benchmark and replication exercise. Estimations apply exclusively to unseen cell designs *within the distribution of this dataset*, and we do not make claims beyond it.

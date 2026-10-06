@@ -181,7 +181,7 @@ def main(path, sheet=0):
     plt.title('Random Forest Estimation (Unseen Cell Design CV)')
     plt.legend()
     plt.tight_layout()
-    plt.savefig("pred_vs_actual.png")
+    plt.savefig("estimated_vs_actual.png")
     plt.close()
     
     err = np.abs(y - y_pred)
