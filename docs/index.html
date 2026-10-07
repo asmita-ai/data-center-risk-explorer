@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Data Center Risk & Footprint Explorer</title>
@@ -39,7 +39,7 @@ footer{font-size:.8rem;color:var(--mu);margin-top:20px}
 .hide{display:none}
 </style></head><body><div class="wrap">
 <h1>Data Center Risk &amp; Footprint Explorer</h1>
-<p class="sub">An educational estimator for two problems in AI infrastructure: how much water a data center really uses, and which backup-battery chemistry carries which fire hazard.</p>
+<p class="sub">An educational estimator and open benchmark for three aspects of AI infrastructure: how much water a data center really uses, which backup-battery chemistry carries which fire hazard, and how accurately we can estimate battery thermal runaway heat.</p>
 <div class="tabs"><button id="t1" class="on">Water</button><button id="t2">Battery chemistry</button><button id="t3">Benchmark</button></div>
 
 <section id="p1">
@@ -51,7 +51,7 @@ footer{font-size:.8rem;color:var(--mu);margin-top:20px}
 <div><label>Local electricity grid</label><select id="grid">
 <option value="coal">Coal-heavy</option><option value="gas">Gas-heavy</option><option value="mix" selected>Mixed</option><option value="clean">Wind/solar-heavy</option></select></div></div></div>
 <div class="card"><h2>Estimated annual water consumption</h2>
-<div class="big" id="tot">–</div><div class="sub" id="eq"></div>
+<div class="big" id="tot">Ã¢â‚¬â€œ</div><div class="sub" id="eq"></div>
 <div class="bar"><div id="bd" style="background:var(--w)"></div><div id="bi" style="background:var(--i)"></div></div>
 <div class="leg"><span><i class="dot" style="background:var(--w)"></i>On-site cooling: <b id="vd"></b></span><span><i class="dot" style="background:var(--i)"></i>Power generation (off-site): <b id="vi"></b></span></div>
 <p class="note" id="insight"></p>
@@ -74,13 +74,13 @@ footer{font-size:.8rem;color:var(--mu);margin-top:20px}
 <section id="p3" class="hide">
 <div class="card"><h2>Benchmark</h2>
 <p>A Python benchmark on the open Battery Failure Databank (~365 calorimeter abuse tests on commercial Li-ion cells across ~31 cell designs). It evaluates how well total heat release can be estimated from cell features across three tiers of information: Tier A (pre-test specifications only, no ejected mass), Tier B (Tier A plus trigger/in-test measurements), and Tier C (Tier B plus post-test masses and failure mechanisms). It compares performance against a naive baseline and evaluates generalization to unseen cell designs.</p>
-<p class="note"><b>Results (10 repeats of 5-fold group CV by cell design):</b> Using strictly pre-test metadata (Tier A), a Random Forest estimated total heat yield with R² = 0.671 ± 0.254 and MAE = 8.798 ± 1.959 kJ (± values represent standard deviation across splits, not a confidence interval). Including in-test trigger parameters (Tier B) showed virtually no improvement over Tier A. However, including post-test ejecta mass and observed failure mechanisms (Tier C) significantly increased performance to R² = 0.801 ± 0.133 and MAE = 7.211 ± 1.573 kJ, with Ridge and Random Forest performing about equally well. The clear finding is that post-test measurements add a lot of explanatory power.<br><br><b>Leakage note:</b> Columns containing explicit downstream heat measurements were excluded. Including batch IDs (Test-Series) resulted in a Tier A R-squared of 0.673 compared to 0.671 without them, a negligible difference. No novelty is claimed; this is a benchmark/replication exercise, and conclusions apply only to this specific dataset.</p></div>
+<p class="note"><b>Results (10 repeats of 5-fold group CV by cell design):</b> Using strictly pre-test metadata (Tier A), a Random Forest estimated total heat yield with RÃ‚Â² = 0.671 Ã‚Â± 0.254 and MAE = 8.798 Ã‚Â± 1.959 kJ (Ã‚Â± values represent standard deviation across splits, not a confidence interval). Including in-test trigger parameters (Tier B) showed virtually no improvement over Tier A. However, including post-test ejecta mass and observed failure mechanisms (Tier C) significantly increased performance to RÃ‚Â² = 0.801 Ã‚Â± 0.133 and MAE = 7.211 Ã‚Â± 1.573 kJ, with Ridge and Random Forest performing about equally well. The clear finding is that post-test measurements add a lot of explanatory power.<br><br><b>Leakage note:</b> Columns containing explicit downstream heat measurements were excluded. Including batch IDs (Test-Series) resulted in a Tier A R-squared of 0.673 compared to 0.671 without them, a negligible difference. No novelty is claimed; this is a benchmark/replication exercise, and conclusions apply only to this specific dataset.</p></div>
 <div class="card"><h2>Sources</h2><dl>
 <dt>Battery Failure Databank</dt><dd>Finegan et al. (2024), <i>Journal of Power Sources</i> 597: 234106. <a href="https://doi.org/10.1016/j.jpowsour.2024.234106">https://doi.org/10.1016/j.jpowsour.2024.234106</a></dd>
 <dt>ML for thermal runaway warning</dt><dd><i>Data-Driven Thermal Runaway Warning for Batteries</i>. Batteries (2026), 12(6), 204. <a href="https://doi.org/10.3390/batteries12060204">https://doi.org/10.3390/batteries12060204</a></dd>
-<dt>Data center fire cases</dt><dd>Korea NIRS (Sep 26, 2025): 647 systems, 384 Li-ion packs destroyed, UPS batteries being relocated. <a href="https://www.koreajoongangdaily.com/korea/all-386-battery-packs-at-govt-data-center-destroyed-replacing-them-could-take-time/12307999">Korea JoongAng Daily</a>, <a href="https://www.koreaherald.com/article/10585032">The Korea Herald</a><br>Digital Realty Singapore (Sep 10, 2024): fire involved Li-ion batteries in third-floor battery rooms, per the Singapore Civil Defence Force. <a href="https://datacenterdynamics.com/en/news/lithium-ion-fire-causes-emergency-power-shutdown-at-digital-realty-data-center-in-singapore">DatacenterDynamics</a><br>Kakao/SK C&C Pangyo (Oct 15, 2022): fire at a data center near Seoul caused a widespread service outage. <a href="https://apnews.com/article/technology-business-seoul-south-korea-service-outages-44daf32d58c10d0a05d69ae532aca19b">AP News</a></dd>
-<dt>Water footprint and transparency</dt><dd>Schön et al. (2025), <i>Expert Assessment: The Systemic Environmental Risks of Artificial Intelligence</i>. AI's environmental risks extend beyond direct energy and water use. <a href="https://arxiv.org/abs/2512.11863">https://arxiv.org/abs/2512.11863</a><br>Bolaños-Zuñiga & Lamadrid (2026), <i>Environmental and Economic Implications of Artificial Intelligence Data Centers in the United States</i>. Impacts depend on the broader electricity, water, and land-use systems around a facility. <a href="https://arxiv.org/abs/2608.09882">https://arxiv.org/abs/2608.09882</a></dd>
-</dl></div>
+<dt>Data center fire cases</dt><dd>Korea NIRS (Sep 26, 2025): 647 systems, 384 Li-ion packs destroyed, UPS batteries being relocated. <a href="https://www.koreajoongangdaily.com/korea/all-386-battery-packs-at-govt-data-center-destroyed-replacing-them-could-take-time/12307999">Korea JoongAng Daily</a><br>Digital Realty Singapore (Sep 10, 2024): fire involved Li-ion batteries in third-floor battery rooms, per the Singapore Civil Defence Force. <a href="https://datacenterdynamics.com/en/news/lithium-ion-fire-causes-emergency-power-shutdown-at-digital-realty-data-center-in-singapore">DatacenterDynamics</a><br>Kakao data center fire (Oct 2022): fire at a data center near Seoul caused a widespread service outage. <a href="https://apnews.com/article/technology-business-seoul-south-korea-service-outages-44daf32d58c10d0a05d69ae532aca19b">AP News</a></dd>
+<dt>Water footprint and transparency</dt><dd>Sch&ouml;n et al. (2025), <i>Expert Assessment: The Systemic Environmental Risks of Artificial Intelligence</i>. AI's environmental risks extend beyond direct energy and water use. <a href="https://arxiv.org/abs/2512.11863">https://arxiv.org/abs/2512.11863</a><br>Bola&ntilde;os-Zu&ntilde;iga &amp; Lamadrid (2026), <i>Environmental and Economic Implications of Artificial Intelligence Data Centers in the United States</i>. Impacts depend on the broader electricity, water, and land-use systems around a facility. <a href="https://arxiv.org/abs/2608.09882">https://arxiv.org/abs/2608.09882</a></dd>
+<dt>Background Assumptions References</dt><dd>Macknick et al. (2012): <i>A review of operational water consumption and withdrawal factors for electricity generating technologies</i>. Environ. Res. Lett. 7, 045802. <a href="https://doi.org/10.1088/1748-9326/7/4/045802">DOI</a> (not opened)</dd><dd>Shehabi et al. (2016): <i>United States Data Center Energy Usage Report</i>. LBNL-1005775. <a href="https://eta-publications.lbl.gov/sites/default/files/lbnl-1005775_v2.pdf">PDF</a> (not opened)</dd><dd>Torcellini et al. (2003): <i>Consumptive Water Use for U.S. Power Production</i>. NREL/TP-550-33905. <a href="https://www.nrel.gov/docs/fy04osti/33905.pdf">PDF</a> (not opened)</dd><dd>Feng et al. (2018): <i>Thermal runaway mechanism of lithium ion battery for electric vehicles: A review</i>. Energy Storage Materials 10, 246-267. <a href="https://doi.org/10.1016/j.ensm.2017.05.013">DOI</a> (not opened)</dd><dd>Uptime Institute: <i>Global Data Center Survey 2026</i>. (not opened)</dd><dd>IEEE 1635: <i>IEEE/ASHRAE Guide for the Ventilation and Thermal Management of Batteries for Stationary Applications</i>. (not opened)</dd><dd><i>Note: Sodium-ion onset temperatures are marked as an illustrative assumption.</i></dd></dl></div>
 </section>
 <footer><b>Disclaimer:</b> Calculations rely on a simplified model using typical engineering ranges, not measurements of a specific facility. Real values vary widely by climate, season, design and grid. Treat results as order-of-magnitude estimates, and check primary sources before relying on them. Battery scores are qualitative judgements, not empirical test results.</footer>
 </div>
@@ -99,9 +99,10 @@ function water(){
  $('bd').style.width=(d/t*100)+'%';$('bi').style.width=(i/t*100)+'%';
  $('vd').textContent=fmt(d);$('vi').textContent=fmt(i);
  const sh=Math.round(d/t*100);
- let m='On-site cooling is only '+sh+'% of this total. ';
- if(sh<30)m+='Even a near-zero-water cooling design leaves most of the footprint in power generation, so the grid choice now matters more than the cooling choice.';
- else m+='Here cooling dominates. Switching to warm-water liquid cooling would cut on-site use sharply, though dry cooling can raise electricity demand.';
+ let m='On-site cooling accounts for '+sh+'% of this total. ';
+ if(sh<35)m+='Off-site power generation dominates the water footprint. Grid choice matters more here than the local cooling design.';
+ else if(sh<=65)m+='On-site cooling and off-site power generation are roughly balanced contributors to the total footprint.';
+ else m+='On-site cooling dominates the footprint. Switching to warm-water liquid cooling or dry cooling would cut on-site use sharply, though dry cooling can raise electricity demand.';
  if($('grid').value==='hydro')m+=' Hydro figures depend heavily on how reservoir evaporation is allocated, so treat this one with extra caution.';
  $('insight').textContent=m;
 }
@@ -110,12 +111,12 @@ function water(){
 // Battery data: scores 1-5 (5 = best for the user)
 const B=[
 {n:'Li-ion NMC',s:{Safety:2,'Space efficiency':5,Cost:3,Lifespan:3},
- onset:'Reported onset temperatures vary significantly by state-of-charge and cell design, but are typically lower than LFP (e.g., 150-210 °C). Self-heats once started.',
+ onset:'Reported onset temperatures vary significantly by state-of-charge and cell design, but are typically lower than LFP (e.g., 150-210 &deg;C). Self-heats once started.',
  gas:'H2, CO, CO2, hydrocarbons, plus electrolyte vapour; LiPF6 salts can yield toxic HF.',
  haz:'Oxygen-releasing layered oxide cathode feeds the fire from inside the cell (Feng et al., 2018), so cooling alone is slow to stop it.',
  fix:'Early gas/heat detection, fire-rated separation from server halls, propagation barriers, enough cooling water for the long tail.'},
 {n:'Li-ion LFP',s:{Safety:4,'Space efficiency':3,Cost:4,Lifespan:4},
- onset:'Reported onset temperatures vary significantly, but are typically higher than NMC (e.g., >220 °C) and release less heat.',
+ onset:'Reported onset temperatures vary significantly, but are typically higher than NMC (e.g., &gt;220 &deg;C) and release less heat.',
  gas:'Mostly H2, CO and CO2 with flammable electrolyte vapour; HF is still possible from the electrolyte.',
  haz:'Stable phosphate lattice strongly inhibits oxygen release (Feng et al., 2018). Organic electrolyte is still flammable, so it is safer, not safe.',
  fix:'Same detection and ventilation discipline as NMC, with explosion-venting design because vented gas can ignite late.'},
@@ -146,3 +147,5 @@ function tab(n){[1,2,3].forEach(k=>{$('p'+k).classList.toggle('hide',n!==k);$('t
 $('t1').onclick=()=>tab(1);$('t2').onclick=()=>tab(2);$('t3').onclick=()=>tab(3);
 water();build();rank();
 </script></body></html>
+
+

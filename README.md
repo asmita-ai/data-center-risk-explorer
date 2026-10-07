@@ -1,8 +1,8 @@
-﻿# Battery Thermal Runaway Benchmark
+# Battery Thermal Runaway Benchmark
 
 **Question:** How well can we estimate the total heat released in a Li-ion thermal runaway across three tiers of information: Tier A (pre-test specifications only, no ejected mass), Tier B (Tier A plus trigger/in-test measurements), and Tier C (Tier B plus post-test masses and failure mechanisms)? Furthermore, does the model hold up on unseen cell designs?
 
-**Data Citation:** Finegan et al., *J. Power Sources* 597 (2024) 234106, doi:10.1016/j.jpowsour.2024.234106. Note that the data licence is CC BY-NC-ND, so the raw dataset is NOT redistributed in this repository. Download the spreadsheet from NREL/NASA yourself to reproduce these results.
+**Data Citation:** Finegan et al., *J. Power Sources* 597 (2024) 234106, doi:10.1016/j.jpowsour.2024.234106. See the NREL/NASA data page for terms of use. The raw dataset is NOT redistributed in this repository. Download the spreadsheet from NREL/NASA yourself to reproduce these results.
 
 **Run:** `cd benchmark` then `python bfd_benchmark.py ../battery-failure-databank-revision2-feb24.xlsx "Battery Failure Databank"`
 (Dependencies are pinned in `benchmark/requirements.txt`. Tested with Python 3.12).
@@ -45,3 +45,12 @@ As shown, the models can estimate total heat yield for unseen cell designs using
 
 ## Limitations
 Small dataset (~365 samples), limited number of distinct cell designs (~31 designs), lab calorimeter conditions (not data-center racks), no claim of novelty: this is a benchmark and replication exercise. Estimations apply exclusively to unseen cell designs *within the distribution of this dataset*, and we do not make claims beyond it.
+
+## References (Background Assumptions)
+*   **Macknick et al. (2012):** *A review of operational water consumption and withdrawal factors for electricity generating technologies*. Environ. Res. Lett. 7, 045802. https://doi.org/10.1088/1748-9326/7/4/045802 (not opened)
+*   **Shehabi et al. (2016):** *United States Data Center Energy Usage Report*. LBNL-1005775. https://eta-publications.lbl.gov/sites/default/files/lbnl-1005775_v2.pdf (not opened)
+*   **Torcellini et al. (2003):** *Consumptive Water Use for U.S. Power Production*. NREL/TP-550-33905. https://www.nrel.gov/docs/fy04osti/33905.pdf (not opened)
+*   **Feng et al. (2018):** *Thermal runaway mechanism of lithium ion battery for electric vehicles: A review*. Energy Storage Materials 10, 246-267. https://doi.org/10.1016/j.ensm.2017.05.013 (not opened)
+*   **Uptime Institute:** *Global Data Center Survey 2026*. (not opened)
+*   **IEEE 1635:** *IEEE/ASHRAE Guide for the Ventilation and Thermal Management of Batteries for Stationary Applications*. (not opened)
+*   *Note: Sodium-ion onset temperatures are marked as an illustrative assumption.*
