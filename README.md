@@ -12,6 +12,7 @@ An educational estimator and open benchmark for three aspects of AI infrastructu
 *   `docs/`: Contains the source code for the live static website (`index.html`).
 
 ## Run the benchmark
+Download the databank spreadsheet from the NREL/NASA page and place it in the repository root before running.
 To reproduce the thermal runaway benchmark results:
 ```bash
 cd benchmark
@@ -29,11 +30,6 @@ python bfd_benchmark.py ../battery-failure-databank-revision2-feb24.xlsx "Batter
 
 **Question:** How well can we estimate the total heat released in a Li-ion thermal runaway across three tiers of information: Tier A (pre-test specifications only, no ejected mass), Tier B (Tier A plus trigger/in-test measurements), and Tier C (Tier B plus post-test masses and failure mechanisms)? Furthermore, does the model hold up on unseen cell designs?
 
-**Data Citation:** Finegan et al., *J. Power Sources* 597 (2024) 234106, doi:10.1016/j.jpowsour.2024.234106. See the NREL/NASA data page for terms of use. The raw dataset is NOT redistributed in this repository. Download the spreadsheet from NREL/NASA yourself to reproduce these results.
-
-**Run:** `cd benchmark` then `python bfd_benchmark.py ../battery-failure-databank-revision2-feb24.xlsx "Battery Failure Databank"`
-(Dependencies are pinned in `benchmark/requirements.txt`. Tested with Python 3.12).
-
 **Method:** Mean baseline vs ridge vs random forest; evaluated using 10 repeats of 5-fold group CV by cell design (each test fold contains completely unseen cell designs). 
 
 **Tiers of features evaluated:**
@@ -43,7 +39,7 @@ python bfd_benchmark.py ../battery-failure-databank-revision2-feb24.xlsx "Batter
 
 ## Results (10 repeats of 5-fold group CV by cell design)
 
-*Note: ‚± values represent standard deviation across splits, not a confidence interval.*
+*Note: ± values represent standard deviation across splits, not a confidence interval.*
 
 ```
              Tier           Model              MAE               R2
