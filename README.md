@@ -1,4 +1,31 @@
-﻿# Battery Thermal Runaway Benchmark
+# Data Center Risk & Footprint Explorer
+
+**Live site:** [https://asmita-ai.github.io/data-center-risk-explorer/](https://asmita-ai.github.io/data-center-risk-explorer/)
+
+An educational estimator and open benchmark for three aspects of AI infrastructure:
+*   **Water:** A calculator estimating data center water footprint, contrasting on-site cooling with off-site power generation (using sourced and illustrative assumptions).
+*   **Battery chemistry:** A qualitative comparison of backup battery fire hazards (NMC, LFP, sodium-ion, VRLA lead-acid).
+*   **Benchmark:** A machine learning benchmark evaluating how accurately we can estimate battery thermal runaway heat from pre-test and post-test features.
+
+## Repository structure
+*   `benchmark/`: Contains the Python script (`bfd_benchmark.py`), requirements, and results for the thermal runaway heat benchmark.
+*   `docs/`: Contains the source code for the live static website (`index.html`).
+
+## Run the benchmark
+To reproduce the thermal runaway benchmark results:
+```bash
+cd benchmark
+python bfd_benchmark.py ../battery-failure-databank-revision2-feb24.xlsx "Battery Failure Databank"
+```
+*(Dependencies are pinned in `benchmark/requirements.txt`. Tested with Python 3.12).*
+
+## License
+*   **Code:** MIT License.
+*   **Data:** See the NREL/NASA data page for terms of use. The raw dataset is NOT redistributed in this repository.
+
+---
+
+## Battery Thermal Runaway Benchmark
 
 **Question:** How well can we estimate the total heat released in a Li-ion thermal runaway across three tiers of information: Tier A (pre-test specifications only, no ejected mass), Tier B (Tier A plus trigger/in-test measurements), and Tier C (Tier B plus post-test masses and failure mechanisms)? Furthermore, does the model hold up on unseen cell designs?
 
@@ -16,7 +43,7 @@
 
 ## Results (10 repeats of 5-fold group CV by cell design)
 
-*Note: Ã‚Â± values represent standard deviation across splits, not a confidence interval.*
+*Note: ‚± values represent standard deviation across splits, not a confidence interval.*
 
 ```
              Tier           Model              MAE               R2
@@ -34,7 +61,7 @@ Tier A (With IDs)   Random forest  8.801 +/- 2.147  0.673 +/- 0.234
            Tier C   Random forest  7.211 +/- 1.573  0.801 +/- 0.133
 ```
 
-As shown, the models can estimate total heat yield for unseen cell designs using only metadata (Tier A) with an RÂ² of ~0.67. Including batch IDs (Test-Series) resulted in a Tier A R-squared of 0.673 compared to 0.671 without them, a negligible difference. Tier B showed no improvement over Tier A. However, including post-test measurements (Tier C) adds a lot of explanatory power, raising RÂ² to ~0.80, with Ridge and Random Forest performing about equally well.
+As shown, the models can estimate total heat yield for unseen cell designs using only metadata (Tier A) with an R² of ~0.67. Including batch IDs (Test-Series) resulted in a Tier A R-squared of 0.673 compared to 0.671 without them, a negligible difference. Tier B showed no improvement over Tier A. However, including post-test measurements (Tier C) adds a lot of explanatory power, raising R² to ~0.80, with Ridge and Random Forest performing about equally well.
 
 ### Visualizations
 *Plot 1 shows Estimated vs Actual heat output for the Random Forest model using Tier C features.*
@@ -47,7 +74,7 @@ As shown, the models can estimate total heat yield for unseen cell designs using
 Small dataset (~365 samples), limited number of distinct cell designs (~31 designs), lab calorimeter conditions (not data-center racks), no claim of novelty: this is a benchmark and replication exercise. Estimations apply exclusively to unseen cell designs *within the distribution of this dataset*, and we do not make claims beyond it.
 
 ## References (Background Assumptions)
-*   **Macknick et al. (2012):** *A review of operational water consumption and withdrawal factors for electricity generating technologies*. Environ. Res. Lett. 7, 045802. https://doi.org/10.1088/1748-9326/7/4/045802 (opened (open access))
+*   **Macknick et al. (2012):** *A review of operational water consumption and withdrawal factors for electricity generating technologies*. Environ. Res. Lett. 7, 045802. https://doi.org/10.1088/1748-9326/7/4/045802 (open access)
 *   **Shehabi et al. (2016):** *United States Data Center Energy Usage Report*. LBNL-1005775. https://eta-publications.lbl.gov/sites/default/files/lbnl-1005775_v2.pdf (opened)
 *   **Torcellini et al. (2003):** *Consumptive Water Use for U.S. Power Production*. NREL/TP-550-33905. https://19january2021snapshot.epa.gov/sites/static/files/documents/33905.pdf (opened)
 *   **Feng et al. (2018):** *Thermal runaway mechanism of lithium ion battery for electric vehicles: A review*. Energy Storage Materials 10, 246-267. https://doi.org/10.1016/j.ensm.2017.05.013 (abstract opened; full text not accessed)
