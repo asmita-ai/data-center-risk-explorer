@@ -15,6 +15,7 @@ An educational estimator and open benchmark for three aspects of AI infrastructu
 Download the databank spreadsheet from the NREL/NASA page and place it in the repository root before running.
 To reproduce the thermal runaway benchmark results:
 ```bash
+pip install -r benchmark/requirements.txt
 cd benchmark
 python bfd_benchmark.py ../battery-failure-databank-revision2-feb24.xlsx "Battery Failure Databank"
 ```
