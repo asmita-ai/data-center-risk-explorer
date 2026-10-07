@@ -1,6 +1,6 @@
-# Battery Thermal Runaway Benchmark
+﻿# Battery Thermal Runaway Benchmark
 
-**Question:** From cell metadata and ejected mass alone, how well can we estimate the total heat released in a Li-ion thermal runaway, and does the model hold up on unseen cell designs?
+**Question:** How well can we estimate the total heat released in a Li-ion thermal runaway across three tiers of information: Tier A (pre-test specifications only, no ejected mass), Tier B (Tier A plus trigger/in-test measurements), and Tier C (Tier B plus post-test masses and failure mechanisms)? Furthermore, does the model hold up on unseen cell designs?
 
 **Data Citation:** Finegan et al., *J. Power Sources* 597 (2024) 234106, doi:10.1016/j.jpowsour.2024.234106. Note that the data licence is CC BY-NC-ND, so the raw dataset is NOT redistributed in this repository. Download the spreadsheet from NREL/NASA yourself to reproduce these results.
 
@@ -16,7 +16,7 @@
 
 ## Results (10 repeats of 5-fold group CV by cell design)
 
-*Note: ± values represent standard deviation across splits, not a confidence interval.*
+*Note: Â± values represent standard deviation across splits, not a confidence interval.*
 
 ```
              Tier           Model              MAE               R2
@@ -34,7 +34,7 @@ Tier A (With IDs)   Random forest  8.801 +/- 2.147  0.673 +/- 0.234
            Tier C   Random forest  7.211 +/- 1.573  0.801 +/- 0.133
 ```
 
-As shown, the models can estimate total heat yield for unseen cell designs using only metadata (Tier A) with an R² of ~0.67. Tier B showed no improvement over Tier A. However, including post-test measurements (Tier C) adds a lot of explanatory power, raising R² to ~0.80, with Ridge and Random Forest performing about equally well.
+As shown, the models can estimate total heat yield for unseen cell designs using only metadata (Tier A) with an R² of ~0.67. Including batch IDs (Test-Series) resulted in a Tier A R-squared of 0.673 compared to 0.671 without them, a negligible difference. Tier B showed no improvement over Tier A. However, including post-test measurements (Tier C) adds a lot of explanatory power, raising R² to ~0.80, with Ridge and Random Forest performing about equally well.
 
 ### Visualizations
 *Plot 1 shows Estimated vs Actual heat output for the Random Forest model using Tier C features.*
