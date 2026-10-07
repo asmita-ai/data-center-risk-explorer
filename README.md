@@ -22,7 +22,7 @@ python bfd_benchmark.py ../battery-failure-databank-revision2-feb24.xlsx "Batter
 
 ## License
 *   **Code:** MIT License.
-*   **Data:** See the NREL/NASA data page for terms of use. The raw dataset is NOT redistributed in this repository.
+*   **Data:** NREL/NASA Battery Failure Databank, Finegan et al., J. Power Sources 597 (2024) 234106, doi:10.1016/j.jpowsour.2024.234106. See the NREL/NASA data page for terms of use. The raw dataset is NOT redistributed in this repository.
 
 ---
 
