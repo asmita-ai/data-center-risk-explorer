@@ -116,7 +116,7 @@ const B=[
  haz:'Oxygen-releasing layered oxide cathode feeds the fire from inside the cell, so cooling alone is slow to stop it.',
  fix:'Early gas/heat detection, fire-rated separation from server halls, propagation barriers, enough cooling water for the long tail.'},
 {n:'Li-ion LFP',s:{Safety:4,'Space efficiency':3,Cost:4,Lifespan:4},
- onset:'Reported onset temperatures vary significantly, but are typically higher than NMC and release less heat.',
+ onset:'Reported onset temperatures vary significantly, but are typically higher than NMC and tend to release less heat.',
  gas:'Mostly H2, CO and CO2 with flammable electrolyte vapour; HF is still possible from the electrolyte.',
  haz:'Stable phosphate lattice strongly inhibits oxygen release. Organic electrolyte is still flammable, so it is safer, not safe.',
  fix:'Same detection and ventilation discipline as NMC, with explosion-venting design because vented gas can ignite late.'},
@@ -126,7 +126,7 @@ const B=[
  haz:'No lithium, cheaper raw materials, but still a flammable electrolyte; behaviour differs between cathode families.',
  fix:'Treat as lithium-class until field data mature; watch certification and standards as they develop.'},
 {n:'VRLA lead-acid',s:{Safety:4,'Space efficiency':1,Cost:5,Lifespan:2},
- onset:'No lithium-style cascade, but overcharge or high temperature can cause thermal runaway of the float-charge kind (IEEE 1635).',
+ onset:'No lithium-style cascade, but overcharge or high temperature can cause thermal runaway of the float-charge kind (background reference: IEEE 1635, not opened).',
  gas:'Hydrogen (and oxygen) from water electrolysis; sulfuric acid mist if vented.',
  haz:'Non-flammable electrolyte, yet hydrogen accumulation and heavy lead content bring different risks.',
  fix:'Ventilation, temperature-compensated charging, regular replacement; large footprint and weight are the real cost.'}
