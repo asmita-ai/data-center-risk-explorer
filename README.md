@@ -1,4 +1,5 @@
 # Data Center Risk & Footprint Explorer
+[![DOI](https://zenodo.org/badge/1407024192.svg)](https://doi.org/10.5281/zenodo.23256787)
 
 **Live site:** [https://asmita-ai.github.io/data-center-risk-explorer/](https://asmita-ai.github.io/data-center-risk-explorer/)
 
@@ -33,7 +34,7 @@ The web calculator estimates the annual water footprint using these formulas:
 The battery chemistry risk prioritization panel ranks different technologies across attributes like safety, space efficiency, cost, and lifespan. These scores are qualitative judgements based on general technical characteristics, not empirical test results.
 
 ## Citation
-A `CITATION.cff` file is included in this repository. You can use GitHub's "Cite this repository" button in the sidebar to generate a citation.
+A `CITATION.cff` file is included in this repository. You can use GitHub's "Cite this repository" button in the sidebar to generate a citation. Archived on Zenodo: https://doi.org/10.5281/zenodo.23256787
 
 ## Repository structure
 *   `benchmark/`: Contains the Python script (`bfd_benchmark.py`), requirements, and results for the thermal runaway heat benchmark.
