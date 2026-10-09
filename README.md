@@ -7,6 +7,22 @@ An educational estimator and open benchmark for three aspects of AI infrastructu
 *   **Battery chemistry:** A qualitative comparison of backup battery fire hazards (NMC, LFP, sodium-ion, VRLA lead-acid).
 *   **Benchmark:** A machine learning benchmark evaluating how accurately we can estimate battery thermal runaway heat from pre-test and post-test features.
 
+## Motivation
+Data centers use water for cooling and through the electricity they consume. At the same time, lithium-ion backup batteries have been involved in documented data center fires. This project explores the water footprint trade-offs between local cooling and off-site grid power, and provides a qualitative comparison of backup battery fire hazards.
+
+## Water model
+The web calculator estimates the annual water footprint using these formulas:
+*   **IT energy (MWh/year):** `IT capacity (MW) * 8760 * Utilization (%) / 100`
+*   **On-site cooling water (million L):** `IT energy * Cooling WUE / 1000`
+*   **Off-site power generation water (million L):** `IT energy * Cooling PUE * Grid water intensity / 1000`
+*   **Total water:** `On-site + Off-site`
+*   **Household equivalent:** `Total water * 1,000,000 / (150 * 365)`
+
+*Parameters:* The baseline evaporative WUE (1.8 L/kWh) and grid water intensities for coal (2.6 L/kWh) and gas (0.75 L/kWh) are sourced from industry reports (Shehabi et al. 2016, Macknick et al. 2012). All PUE values, hybrid/liquid WUE values, and the simplified US average grid mix are illustrative assumptions.
+
+## Battery chemistry panel
+The battery chemistry risk prioritization panel ranks different technologies across attributes like safety, space efficiency, cost, and lifespan. These scores are qualitative judgements based on general technical characteristics, not empirical test results.
+
 ## Repository structure
 *   `benchmark/`: Contains the Python script (`bfd_benchmark.py`), requirements, and results for the thermal runaway heat benchmark.
 *   `docs/`: Contains the source code for the live static website (`index.html`).
@@ -68,7 +84,9 @@ As shown, the models can estimate total heat yield for unseen cell designs using
 ![Estimation Error by Cell Design (Tier C Random Forest)](benchmark/error_by_design.png)
 
 ## Limitations
-Small dataset (~365 samples), limited number of distinct cell designs (~31 designs), lab calorimeter conditions (not data-center racks), no claim of novelty: this is a benchmark and replication exercise. Estimations apply exclusively to unseen cell designs *within the distribution of this dataset*, and we do not make claims beyond it.
+*   **Benchmark:** Small dataset (~365 samples), limited number of distinct cell designs (~31 designs), lab calorimeter conditions (not data-center racks), no claim of novelty: this is a benchmark and replication exercise. Estimations apply exclusively to unseen cell designs *within the distribution of this dataset*, and we do not make claims beyond it.
+*   **Water Calculator:** Calculations rely on a simplified model using typical engineering ranges, not measurements of a specific facility. Real values vary widely by climate, season, design, and grid. Treat results as order-of-magnitude estimates.
+*   **Battery Chemistry:** Battery scores are qualitative judgements, not empirical test results.
 
 ## References (Background Assumptions)
 *   **Macknick et al. (2012):** *A review of operational water consumption and withdrawal factors for electricity generating technologies*. Environ. Res. Lett. 7, 045802. https://doi.org/10.1088/1748-9326/7/4/045802 (open access)
@@ -80,3 +98,6 @@ Small dataset (~365 samples), limited number of distinct cell designs (~31 desig
 
 
 
+
+## Feedback
+Please open an issue on GitHub to report bugs, suggest corrections, or provide feedback.

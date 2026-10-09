@@ -14,9 +14,16 @@ from sklearn.model_selection import KFold, cross_validate, cross_val_predict
 warnings.filterwarnings("ignore", category=UserWarning)
 
 def clean_col_name(c):
+    """
+    Cleans column names by removing excessive whitespace and newline characters.
+    """
     return re.sub(r"\s+", " ", str(c)).strip()
 
 def get_repeated_group_cv(groups, n_repeats=10, n_splits=5, random_state=42):
+    """
+    Generates repeated group cross-validation splits.
+    Ensures that groups (e.g. cell designs) are not split across train and test sets.
+    """
     rng = np.random.RandomState(random_state)
     unique_groups = groups.unique()
     cv_splits = []
@@ -30,6 +37,10 @@ def get_repeated_group_cv(groups, n_repeats=10, n_splits=5, random_state=42):
     return cv_splits
 
 def run_evaluation(X, y, groups, models, cv_splits):
+    """
+    Evaluates machine learning models using cross-validation.
+    Returns the mean and standard deviation of MAE and R-squared across all splits.
+    """
     num_cols = X.select_dtypes(include=[np.number]).columns.tolist()
     cat_cols = X.select_dtypes(exclude=[np.number]).columns.tolist()
     
@@ -56,6 +67,10 @@ def run_evaluation(X, y, groups, models, cv_splits):
     return results
 
 def main(path, sheet=0):
+    """
+    Main function to load the dataset, preprocess features, run model evaluations,
+    and generate summary statistics and plots.
+    """
     df = pd.read_excel(path, sheet_name=sheet) if path.endswith(("xlsx","xls")) else pd.read_csv(path)
     df.columns = [clean_col_name(c) for c in df.columns]
     

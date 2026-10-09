@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+title: "Data Center Risk & Footprint Explorer"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: "Karmakar"
+    given-names: "Asmita"
+repository-code: "https://github.com/asmita-ai/data-center-risk-explorer"
+url: "https://asmita-ai.github.io/data-center-risk-explorer/"
+license: MIT
+abstract: "An educational estimator and open benchmark for data center water footprint, battery chemistry fire hazards, and thermal runaway heat estimation."
