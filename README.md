@@ -7,6 +7,15 @@ An educational estimator and open benchmark for three aspects of AI infrastructu
 *   **Battery chemistry:** A qualitative comparison of backup battery fire hazards (NMC, LFP, sodium-ion, VRLA lead-acid).
 *   **Benchmark:** A machine learning benchmark evaluating how accurately we can estimate battery thermal runaway heat from pre-test and post-test features.
 
+![Water tab](docs/img/water.png)
+*Water tab: on-site vs. off-site water estimate with sources and assumptions*
+
+![Battery chemistry tab](docs/img/battery.png)
+*Battery chemistry tab: qualitative comparison of four chemistries*
+
+![Benchmark tab](docs/img/benchmark.png)
+*Benchmark tab: results of the group cross-validated benchmark*
+
 ## Motivation
 Data centers use water for cooling and through the electricity they consume. At the same time, lithium-ion backup batteries have been involved in documented data center fires. This project explores the water footprint trade-offs between local cooling and off-site grid power, and provides a qualitative comparison of backup battery fire hazards.
 
@@ -22,6 +31,9 @@ The web calculator estimates the annual water footprint using these formulas:
 
 ## Battery chemistry panel
 The battery chemistry risk prioritization panel ranks different technologies across attributes like safety, space efficiency, cost, and lifespan. These scores are qualitative judgements based on general technical characteristics, not empirical test results.
+
+## Citation
+A `CITATION.cff` file is included in this repository. You can use GitHub's "Cite this repository" button in the sidebar to generate a citation.
 
 ## Repository structure
 *   `benchmark/`: Contains the Python script (`bfd_benchmark.py`), requirements, and results for the thermal runaway heat benchmark.

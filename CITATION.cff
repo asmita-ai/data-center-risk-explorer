@@ -5,6 +5,7 @@ type: software
 authors:
   - family-names: "Karmakar"
     given-names: "Asmita"
+    orcid: "https://orcid.org/0009-0004-4710-5237"
 repository-code: "https://github.com/asmita-ai/data-center-risk-explorer"
 url: "https://asmita-ai.github.io/data-center-risk-explorer/"
 license: MIT
